@@ -32,3 +32,23 @@ resource "azurerm_app_service" "app" {
 
   tags                = local.tags
 }
+
+resource "azurerm_monitor_metric_alert" "http-errors" {
+  name                = "Http errors found in ${azurerm_app_service.app.name}"
+  resource_group_name = azurerm_resource_group.rg.name
+  scopes              = [azurerm_app_service.app.id]
+  description         = "Http 5xx errors where found in the App Service. Please check it asap."
+  severity            = var.severity
+
+  criteria {
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "Http5xx"
+    aggregation      = "Total"
+    operator         = "GreaterThan"
+    threshold        = 10
+  }
+
+  action {
+    action_group_id = var.action_group_id
+  }
+}

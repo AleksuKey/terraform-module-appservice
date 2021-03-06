@@ -32,3 +32,14 @@ variable "asp_sku" {
     default     = "S1"
     description = "App Service Plan SKU."
 }
+
+variable "severity" {
+    type        = number
+    default     = 4
+    description = "Severity used for the alerts created together with the resources."
+}
+
+variable "action_group_id" {
+    type        = string
+    description = "Action Group ID used to send alerts notifications."
+}
